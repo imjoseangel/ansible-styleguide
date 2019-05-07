@@ -16,9 +16,10 @@
   12. [Spacing](#spacing)
   13. [Variable Names](#variable-names)
   14. [Jinja Variables](#jinja-variables)
-  15. [File Extension](#file-extension)
-  16. [Vaults](#Vaults)
-  17. [Role Names](#Role-Names)
+  15. [Playbook File Extension](#playbook-file-extension)
+  16. [Template File Extension](#template-file-extension)
+  17. [Vaults](#Vaults)
+  18. [Role Names](#Role-Names)
 
 ## Practices
 
@@ -423,9 +424,25 @@ Use spaces around jinja variable names.
 
 A proper definition for how to create Jinja variables produces consistent and easily readable code.
 
-## File Extension
+## Playbook File Extension
 
 All Ansible Yaml files MUST have a `.yml` extension (and NOT .YML, .yaml etc).
+
+```sh
+# bad
+~/template.conf
+
+# good
+~/template.conf.j2
+```
+
+### Why?
+
+The template files will usually have the `.j2` extension, which denotes the Jinja2 templating engine used.
+
+## Template File Extension
+
+All Ansible Yaml files MUST have a `.j2` extension.
 
 ```sh
 # bad
