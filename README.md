@@ -430,22 +430,6 @@ All Ansible Yaml files MUST have a `.yml` extension (and NOT .YML, .yaml etc).
 
 ```sh
 # bad
-~/template.conf
-
-# good
-~/template.conf.j2
-```
-
-### Why?
-
-The template files will usually have the `.j2` extension, which denotes the Jinja2 templating engine used.
-
-## Template File Extension
-
-All Ansible Yaml files MUST have a `.j2` extension.
-
-```sh
-# bad
 ~/tasks.yaml
 
 # good
@@ -455,6 +439,22 @@ All Ansible Yaml files MUST have a `.j2` extension.
 ### Why?
 
 Ansible tooling (like ansible-galaxy init) create files with a `.yml` extension. Also, the Ansible documentation website references files with a `.yml` extension several times. Because of this, it is normal in the Ansible community to use a `.yml` extension for all Ansible Yaml files.
+
+## Template File Extension
+
+All Ansible Template files MUST have a .j2 extension.
+
+```sh
+# bad
+~/template.conf
+
+# good
+~/template.conf.j2
+```
+
+### Why?
+
+Ansible Template files will usually have the .j2 extension, which denotes the Jinja2 templating engine used.
 
 ## Vaults
 
