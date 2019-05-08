@@ -33,23 +33,23 @@
 # then another blank line, then the script.
 
 ---
-- hosts: "localhost"
+- hosts: localhost
   tasks:
-    - name: "fail if someone tries to run this"
+    - name: fail if someone tries to run this
       fail:
         msg: "this playbook was not meant to actually be ran. just inspect the source!"
 
-- include: "first_include.yml" # quote filenames
-- include: "second_include.yml" # no blank line needed between includes without tags
+- include: first_include.yml # DO NOT quote filenames
+- include: second_include.yml # no blank line needed between includes without tags
 
-- include: "third_include.yml" # includes with vars should have blank lines between
+- include: third_include.yml # includes with vars should have blank lines between
   vars:
     myvar: "third_include"
 
-- include: "fourth_include.yml"
+- include: fourth_include.yml
   tags: "fourth_include"
 
-- hosts: "tag_environment_samplefruit"
+- hosts: tag_environment_samplefruit
   remote_user: "centos" # options in alphabetical order
   vars:
     sample_str: "dood" # use snake_case for variable names
@@ -58,19 +58,19 @@
   vars_files:
     - "group_vars/secrets.yml"
   pre_tasks: # then pre_tasks, roles, tasks
-    - name: "this runs a command that involves both single and double quotes"
+    - name: this runs a command that involves both single and double quotes
       command: >
         echo "I can't even"
       args:
         chdir: "/tmp"
 
-    - name: "this command just involves double quotes"
+    - name: this command just involves double quotes
       command: 'echo "Hey man"'
   roles:
-    role: "sample_role"
+    role: sample_role
     tags: "sample_role" # use this format for role listing
   tasks:
-    - name: "get list of directory permissions in /tmp"
+    - name: get list of directory permissions in /tmp
       command: "ls -l /tmp"
       register: tmp_listing # don't quote variable names when registering
 
@@ -96,7 +96,7 @@
       ignore_errors: true
       when: ansible_os_family == 'Darwin' and tmp_listing.stdout_lines | length > 1
 
-    - name: "some modules can have maps in their maps (woah man)"
+    - name: some modules can have maps in their maps (woah man)
       azure_rm_virtualmachine:
         admin_username: "azureuser"
         group: # Use multiple-line arrays
@@ -111,16 +111,16 @@
         vm_size: "Standard_DS1_v2"
         assign_public_ip: true
 
-- hosts: "tag_environment_secondfruit"
+- hosts: tag_environment_secondfruit
   tasks:
-    - name: "this task has multiple tags"
+    - name: this task has multiple tags
       tags:
         - "tagme"
         - "tagmetoo"
       set_fact:
         mr_fact: "w"
 
-    - name: "perform an action"
+    - name: perform an action
       action: ec2_facts
-      delegate_to: "localhost"
+      delegate_to: localhost
 # newline at end of file
