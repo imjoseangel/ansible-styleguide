@@ -17,14 +17,15 @@
   13. [Variable Names](#variable-names)
   14. [Jinja Variables](#jinja-variables)
   15. [Comparing](#Comparing)
-  16. [Playbook File Extension](#playbook-file-extension)
-  17. [Template File Extension](#template-file-extension)
-  18. [Vaults](#Vaults)
-  19. [Role Names](#Role-Names)
+  16. [Delegation](#delegation)
+  17. [Playbook File Extension](#playbook-file-extension)
+  18. [Template File Extension](#template-file-extension)
+  19. [Vaults](#Vaults)
+  20. [Role Names](#Role-Names)
 
 ## Practices
 
-You should follow the [Best Practices](https://docs.ansible.com/ansible/latest/user_guide/playbooks_best_practices.html) defined by the Ansible documentation when developing playbooks.
+You should follow the [Best Practices](https://docs.ansible.com/ansible/latest/user_guide/playbooks_best_practices.html) and [Ansible Lint Rules](https://docs.ansible.com/ansible-lint/rules/default_rules.html) defined by the Ansible documentation when developing playbooks.
 
 ### Why?
 
@@ -461,6 +462,34 @@ Don’t compare to empty string. Use `when: var` rather than `when: var != ""` (
 ### Why?
 
 Avoids code complexity sing quotes and standardize the way literals and empty string are used.
+
+## Delegation
+
+Do not use `local_action`, use `delegate_to: localhost`
+
+```yaml
+# bad
+- name: Send summary mail
+  local_action:
+    module: mail
+    subject: "Summary Mail"
+    to: "{{ mail_recipient }}"
+    body: "{{ mail_body }}"
+  run_once: true
+
+# good
+- name: Send summary mail
+  mail:
+    subject: "Summary Mail"
+    to: "{{ mail_recipient }}"
+    body: "{{ mail_body }}"
+  delegate_to: localhost
+  run_once: true
+```
+
+### Why?
+
+Avoid complexity, standardization, flexibility and code readability. The module and its parameters are easy to read and can be delegated even to a third party server.
 
 ## Playbook File Extension
 
