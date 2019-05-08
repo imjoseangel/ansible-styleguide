@@ -24,7 +24,7 @@
 #
 # ---
 #
-# - include: 'role_name.yml'
+# - include: role_name.yml
 #   become: true # only if every task in the role requires super user
 #
 # The self-named yml file contains all of the actual role tasks.

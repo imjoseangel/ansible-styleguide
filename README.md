@@ -16,10 +16,11 @@
   12. [Spacing](#spacing)
   13. [Variable Names](#variable-names)
   14. [Jinja Variables](#jinja-variables)
-  15. [Playbook File Extension](#playbook-file-extension)
-  16. [Template File Extension](#template-file-extension)
-  17. [Vaults](#Vaults)
-  18. [Role Names](#Role-Names)
+  15. [Comparing](#Comparing)
+  16. [Playbook File Extension](#playbook-file-extension)
+  17. [Template File Extension](#template-file-extension)
+  18. [Vaults](#Vaults)
+  19. [Role Names](#Role-Names)
 
 ## Practices
 
@@ -423,6 +424,43 @@ Use spaces around jinja variable names.
 ### Why?
 
 A proper definition for how to create Jinja variables produces consistent and easily readable code.
+
+## Comparing
+
+Don’t compare to literal True/False. Use `when: var` rather than `when: var == True` (or conversely `when: not var`)
+Don’t compare to empty string. Use `when: var` rather than `when: var != ""` (or conversely `when: not var` rather than when: `var == ""`)
+
+```yaml
+# bad
+- name: Validate required variables
+  fail:
+    msg: "No value specified for '{{ item }}'"
+  when: (vars[item] is undefined) or (vars[item] is defined and vars[item] | trim == "")
+  with_items: "{{ appd_required_variables }}"
+
+- name: Create an user and add to the global group
+  include_tasks: user.yml
+  when:
+    - username is defined
+    - username != ""
+
+# good
+- name: Validate required variables
+  fail:
+    msg: "No value specified for '{{ item }}'"
+  when: (vars[item] is undefined) or (vars[item] is defined and not vars[item] | trim == "")
+  with_items: "{{ appd_required_variables }}"
+
+- name: Create an user and add to the global group
+  include_tasks: user.yml
+  when:
+    - username is defined
+    - username
+```
+
+### Why?
+
+Avoids code complexity sing quotes and standardize the way literals and empty string are used.
 
 ## Playbook File Extension
 
