@@ -22,6 +22,7 @@
   18. [Template File Extension](#template-file-extension)
   19. [Vaults](#Vaults)
   20. [Role Names](#Role-Names)
+  21. [Debug and Comments](#debug-and-comments)
 
 ## Practices
 
@@ -555,4 +556,30 @@ mycompany-setup-lvm
 
 ### Why?
 
-If using roles from Ansible Galaxy, it will keep a consistency about which roles are created internally
+If using roles from Ansible Galaxy, it will keep a consistency about which roles are created internally.
+
+## Debug and Comments
+
+Avoid debug and comments in final code as much as possible. Use task and role names to explain what the task or role do. Use verbose option under ansible for debugging purposes.
+
+```yaml
+# bad
+- name: print my_var
+  debug:
+    var: my_var
+  when: ansible_os_family == "Darwin"
+
+# bad
+# set another variable
+- set_fact:
+    my_second_var: "{{ my_var }}"
+
+# good
+- name: set another variable
+  set_fact:
+    my_second_var: "{{ my_var }}"
+```
+
+### Why?
+
+It will keep clean code and consistency avoiding extra debug and comments. Extra debug will spend extra time in when running the playbook or role.
