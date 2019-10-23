@@ -45,7 +45,7 @@ You should start your playbooks with some comments explaining what the playbook'
 - name: Change s1m0n3's status
   service:
     enabled: true
-    name: "s1m0ne"
+    name: "s1m0n3"
     state: "{{ state }}"
   become: true
 
@@ -56,7 +56,7 @@ You should start your playbooks with some comments explaining what the playbook'
 - name: Change s1m0n3's status
   service:
     enabled: true
-    name: "s1m0ne"
+    name: "s1m0n3"
     state: "{{ state }}"
   become: true
 ```
@@ -89,17 +89,17 @@ Do NOT quote:
 
 ```yaml
 # bad
-- name: "start robot named S1m0ne"
+- name: "start robot named S1m0n3"
   service:
-    name: s1m0ne
+    name: s1m0n3
     state: started
     enabled: true
   become: true
 
 # good
-- name: start robot named S1m0ne
+- name: start robot named S1m0n3
   service:
-    name: "s1m0ne"
+    name: "s1m0n3"
     state: "started"
     enabled: true
   become: true
@@ -243,11 +243,11 @@ Use the map syntax **for roles** too.
 
 # good
   roles:
-    role: tomcat
-    tags: "tomcat"
+    - role: tomcat
+      tags: "tomcat"
 
-    role: webapp
-    code: "mycode"
+    - role: webapp
+      code: "mycode"
 ```
 
 ### Why?
