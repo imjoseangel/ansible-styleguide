@@ -110,7 +110,7 @@ Do NOT quote:
     name: "{{ item['robot_name'] }}"
     state: "started"
     enabled: true
-  with_items: "{{ robots }}"
+  loop: "{{ robots | flatten(levels=1) }}"
   become: true
 
 # double quotes to escape characters
@@ -122,7 +122,7 @@ Do NOT quote:
 - name: robot infos
   debug:
     msg: Robot {{ item[robot_name] }} is {{ item[status] }} and in {{ item[az] }}
-  with_items: robots
+  loop: "{{ robots | flatten(levels=1) }}
 
 # folded scalar when the string has nested quotes already
 - name: print some text
@@ -324,7 +324,7 @@ A task should be defined in such a way that it follows this general order:
 # taks vars
 # task map declaration (e.g. service:)
 # task parameters in alphabetical order (remember to always use multi-line map syntax)
-# loop operators (e.g. with_items)
+# loop operators
 # task options in alphabetical order (e.g. become, ignore_errors, register)
 
 # example
@@ -339,7 +339,7 @@ A task should be defined in such a way that it follows this general order:
     network_interfaces: "my_network"
     ssh_password_enabled: false
     vm_size: "Standard_DS1_v2"
-  with_items: "{{ instance_names }}"
+  loop: "{{ instance_names | flatten(levels=1) }}"
   ignore_errors: true
   register: ec2_output
   when: ansible_os_family == "Darwin"
@@ -438,7 +438,7 @@ Don’t compare to empty string. Use `when: var` rather than `when: var != ""` (
   fail:
     msg: "No value specified for '{{ item }}'"
   when: (vars[item] is undefined) or (vars[item] is defined and vars[item] | trim == "")
-  with_items: "{{ appd_required_variables }}"
+  loop: "{{ appd_required_variables | flatten(levels=1) }}"
 
 - name: Create an user and add to the global group
   include_tasks: user.yml
@@ -451,7 +451,7 @@ Don’t compare to empty string. Use `when: var` rather than `when: var != ""` (
   fail:
     msg: "No value specified for '{{ item }}'"
   when: (vars[item] is undefined) or (vars[item] is defined and not vars[item] | trim == "")
-  with_items: "{{ appd_required_variables }}"
+  loop: "{{ appd_required_variables | flatten(levels=1) }}"
 
 - name: Create an user and add to the global group
   include_tasks: user.yml
