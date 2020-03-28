@@ -79,7 +79,7 @@
     # vars
     # module
     # module arguments, alphabetical
-    # loop operator (e.g. with_items, with_fileglob)
+    # loop operator
     # other options, alphabetical (e.g. become, ignore_errors, when)
 
     - name: "a more complicated task to show where everything goes: touch all items from /tmp"
@@ -90,7 +90,7 @@
       file:
         path: "{{ item }}"  # use path for single file actions, dest/src for multi file actions
         state: "touch"  # arguments go in alphabetical order
-      with_items: "{{ tmp_listing.stdout_lines }}"  # loop things go immediately after module
+      loop: "{{ tmp_listing.stdout_lines | flatten(levels=1) }}"  # loop things go immediately after module
       # the rest of the task options are in alphabetical order
       become: true  # try to keep become only on the tasks that need it. If every task in a host uses become, then move it up to the host options
       ignore_errors: true
